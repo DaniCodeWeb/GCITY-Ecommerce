@@ -1,6 +1,6 @@
 ---
 import Image from "astro/components/Image.astro"
-import bg_image from "../assets/theme-images/hero-image.jpg"
+import bg_image from "../../public/Productos/primavera.jpg"
 
 const { newsletter } = Astro.props
 
@@ -26,18 +26,18 @@ const { newsletter } = Astro.props
       <!-- Form -->
       <form class="flex gap-4 flex-col" action="">
 
-        <label class="sr-only" for="nl-name">Name</label>
+        <label class="sr-only" for="nl-name">Nombre</label>
         <input
           id="nl-name"
           class="border-2 rounded-lg text-center bg-bs-surface-0 border-bs-surface-3 form-input px-4 py-3"
-          placeholder="Your name">
+          placeholder="Escribe tu nombre">
 
         <label class="sr-only" for="nl-email">Email</label>
         <input
           id="nl-email"
           type="email"
           class="border-2 rounded-lg text-center bg-bs-surface-0 border-bs-surface-3 form-input px-4 py-3"
-          placeholder="Your email">
+          placeholder="Pon tu contraseña">
 
         <input type="submit" value={ newsletter.cta } class="bs-btn form-input px-4 py-3">
 

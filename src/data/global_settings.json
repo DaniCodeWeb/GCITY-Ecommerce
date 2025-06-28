@@ -1,33 +1,33 @@
 {
-  "title": "blackspike astro landing page",
-  "description": "A free Astro landing theme made with Tailwind",
+  "title": "G.City",
+  "description": "Tus mejores outfits en un solo lugar",
   "social_image": "/1200x630.jpg",
   "base_url": "https://astro-theme.blackspike.com",
   "demo": {
-    "title": "Need design?",
-    "content": "<strong>Get a guided tour through our services</strong>, and find out how you and your team can change the way you work, forever.",
-    "cta": "Book a call"
+    "title": "Inicio Sesion",
+    "content": "<strong>Para que puedas comprar inicia sesion</strong>, despues ingresa y compra el producto que necesites",
+    "cta": "Ingresar"
   },
   "theme_color": "#18181b",
   "nav": [
     {
-      "title": "Services",
+      "title": "Nueva Temporada",
       "link": "/#services"
     },
     {
-      "title": "Case studies",
+      "title": "Prendas",
       "link": "/#case-studies"
     },
     {
-      "title": "Pricing",
+      "title": "Categorias",
       "link": "/#pricing"
     },
     {
-      "title": "FAQ",
+      "title": "Promociones",
       "link": "/#faq"
     },
     {
-      "title": "Newsletter",
+      "title": "Proximas temporadas",
       "link": "/#newsletter"
     }
   ],

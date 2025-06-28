@@ -1,0 +1,30 @@
+---
+// src/components/ProductSearch/ProductSearch.astro
+import SearchBar from './SearchBar.astro'
+import FilterSidebar from './FilterSidebar.astro'
+import ProductGrid from './ProductGrid.astro'
+import { getProducts } from '../../data/products'
+
+
+const { categories } = Astro.props
+const products = await getProducts()
+---
+
+<section class="product-search-section bs-container bs-mt-lg">
+  <div class="flex flex-col md:flex-row gap-8">
+    <!-- Sidebar de filtros -->
+    <FilterSidebar categories={categories} />
+    
+    <!-- Contenido principal -->
+    <div class="flex-1">
+      <SearchBar />
+      <ProductGrid products={products} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .product-search-section {
+    min-height: 70vh;
+  }
+</style>

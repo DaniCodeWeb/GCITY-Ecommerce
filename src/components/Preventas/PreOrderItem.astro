@@ -1,0 +1,16 @@
+---
+// src/components/Preventas/PreOrderItem.astro
+import PreOrderForm from './PreOrderForm.astro'
+import { PreOrderItem } from '../../types/'
+
+interface Props {
+  item: PreOrderItem
+}
+
+const { item } = Astro.props
+---
+
+<article class="bg-white rounded-xl shadow-md overflow-hidden transition-transform hover:scale-[1.02]">
+  <!-- Contenido del item -->
+  <PreOrderForm item={item} />
+</article>

@@ -1,14 +1,14 @@
 {
-  "hero_title": "blackspike astro landing page",
-  "hero_content": "<p><strong>A free Astro landing theme made with Tailwind</strong> to help kick start your Astro website.</p><p>Uses modern CSS and HTML features for added zip, plus a slick swiper carousel. All in Astro JSX.</p>",
-  "services_title": "Our services",
-  "clients_title": "Trusted by some great companies",
-  "testimonials_title": "Clients ♥ us",
-  "case_studies_title": "Case studies",
-  "pricing_title": "We do design retainers",
-  "quote_content": "This <strong>design agency</strong> is a <strong>game changer</strong>. Its <strong>creative vision</strong>, <strong>user-focused approach</strong>, and <strong>seamless collaboration</strong> have <strong>transformed</strong> the way we <strong>build our brand</strong>. It’s <strong>not just an agency</strong> — it’s a <strong>powerful partner</strong> that <strong>delivers real results</strong>.",
-  "quote_cite": "Sean Higgins",
-  "quote_role": "CTO, Interia",
-  "quote_image": "/content-images/quote-man.avif",
-  "faq_title": "Frequently Asked Questions"
+  "hero_title": "G.City",
+  "hero_content": "<p><strong>Moda urbana con actitud</strong>. Descubre las prendas más exclusivas para destacar en la ciudad.</p><p>Colecciones frescas, diseños atrevidos y la mejor calidad para tu estilo único.</p>",
+  "services_title": "Nueva Colección",
+  "clients_title": "Marcas que vestimos",
+  "testimonials_title": "¡Hablemos! ♥",
+  "case_studies_title": "Nuestros Looks",
+  "pricing_title": "Explorar Categorías",
+  "quote_content": "En <strong>G.City</strong> no solo compras ropa, <strong>adquieres estilo</strong>. Sus piezas son <strong>únicas</strong>, la atención es <strong>personalizada</strong> y cada temporada <strong>superan expectativas</strong>. ¡Mi guardarropa ya no sería el mismo sin ellas!",
+  "quote_cite": "Juan Daniel Gonzales Z",
+  "quote_role": "Influencer ",
+  "quote_image": "/src/assets/theme-images/yoxd.jpeg",
+  "faq_title": "Promociones Exclusivas"
 }

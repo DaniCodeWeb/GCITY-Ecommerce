@@ -1,32 +1,32 @@
 [
   {
-    "title": "Powering Growth.<br>Simplifying Success.",
-    "sector": "Web design",
-    "content": "<strong>Our custom web design solution helped Biotechlet Ltd elevate its digital presence with a clean, modern interface and intuitive user experience. </strong> <br><br>The redesigned site streamlined user journeys, improved accessibility, and strengthened brand credibility.",
-    "case_study_link": "https://www.spike.news",
-    "cta": "Visit spike.news",
-    "image": "/content-images/spike.news.avif",
-    "image_alt": "iPad showing spike.news website",
-    "bg": "bg-gradient-to-r from-indigo-500 to-purple-600"
+    "title": "Invierno 2024<br>Elegancia glacial.",
+    "sector": "Colección actual",
+    "content": "<strong>Abraza el frío con nuestra colección invernal. </strong><br><br>Abrigos oversized en lana merino, vestidos tejidos a mano y accesorios en piel sintética. Tonos neutros y detalles brillantes para la temporada festiva.",
+    "case_study_link": "/colecciones/invierno-2024",
+    "cta": "Comprar ahora",
+    "image": "/public/Productos/ChaquetaCu.jpg",
+    "image_alt": "Modelo con abrigo largo beige y botas de invierno",
+    "bg": "bg-gradient-to-r from-gray-700 to-blue-900"
   },
   {
-    "title": "Accelerating Innovation.<br>Empowering Results.",
-    "sector": "Development",
-    "content": "Our dynamic design and build simplified productivity, delivering automated solutions, seamless collaboration, and data-driven insights",
-    "case_study_link": "https://pixelate.pictures",
-    "cta": "Visit pixelate.pictures",
-    "image": "/content-images/pixelate.pictures.avif",
-    "image_alt": "iPad showing pixelated wave painting",
-    "bg": "bg-gradient-to-r from-fuchsia-500 to-cyan-500"
+    "title": "Otoño 2023<br>Clásicos revisitados.",
+    "sector": "Temporada pasada",
+    "content": "Revisita nuestros bestsellers: trench coats en gabardina, conjuntos de punto grueso y faldas midi plisadas. Piezas atemporales con descuentos exclusivos.",
+    "case_study_link": "/rebajas-otoño",
+    "cta": "Ver rebajas",
+    "image": "/public/Productos/falda.jpg",
+    "image_alt": "Streetstyle con trench camel y bufanda a rayas",
+    "bg": "bg-gradient-to-r from-orange-800 to-amber-600"
   },
   {
-    "title": "Enhance productivity,<br>boost efficiency.",
-    "sector": "3D Design",
-    "content": "Create, collaborate, and render — all in one streamlined workflow. Teams are connected and producing stunning visuals in minutes.",
-    "case_study_link": "https://www.brighton.dog",
-    "cta": "Visit brighton.dog",
-    "image": "/content-images/brighton.dog.avif",
-    "image_alt": "iPad showing the web page of brighton.dog",
-    "bg": "bg-gradient-to-r from-pink-500 to-yellow-500"
+    "title": "Primavera 2025<br>Preview exclusivo.",
+    "sector": "Próxima temporada",
+    "content": "Suscríbete para acceso anticipado: floralismos abstractos, silhouettes vaporosas y una paleta de lavanda, verde menta y blanco roto. Lanzamiento oficial en marzo.",
+    "case_study_link": "/waitlist-primavera",
+    "cta": "Unirse a la lista",
+    "image": "/public/Productos/falda1.png",
+    "image_alt": "Detalle de vestido floral en gasa sobre maniquí",
+    "bg": "bg-gradient-to-r from-lime-400 to-purple-300"
   }
 ]

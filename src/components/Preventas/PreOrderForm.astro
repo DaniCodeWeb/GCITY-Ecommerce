@@ -1,0 +1,70 @@
+---
+// src/components/Preventas/PreOrderForm.astro
+import { PreOrderItem } from '../../types'
+import Check from '../assets/theme-images/icon-check.svg'
+
+interface Props {
+  item: PreOrderItem
+}
+
+const { item } = Astro.props
+
+const getColorClass = (color: string) => {
+  const colorMap: Record<string, string> = {
+    'Negro': 'bg-gray-900',
+    'Blanco': 'bg-white border border-gray-200',
+    'Beige': 'bg-amber-100',
+    'Rojo': 'bg-red-500',
+    'Azul noche': 'bg-blue-900',
+    'Gris marengo': 'bg-gray-600'
+  }
+  return colorMap[color] || 'bg-gray-200'
+}
+---
+
+<form 
+  class="preorder-form" 
+  method="POST" 
+  action="/api/preorders"
+  x-data="preorderForm"
+  @submit.prevent="submitForm"
+>
+  <!-- Resto del formulario con las correcciones mencionadas -->
+</form>
+
+<script is:inline>
+  document.addEventListener('alpine:init', () => {
+    Alpine.store('preorderForm', {
+      selectedSize: '',
+      submitting: false,
+      error: null,
+      success: false,
+      
+      submitForm() {
+        this.submitting = true;
+        this.error = null;
+        const form = this.$el;
+        
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            this.success = true;
+          } else {
+            this.error = data.message || 'Error al procesar la reserva';
+          }
+        })
+        .catch(err => {
+          this.error = 'Error de conexión';
+        })
+        .finally(() => {
+          this.submitting = false;
+        });
+      }
+    });
+  });
+</script>

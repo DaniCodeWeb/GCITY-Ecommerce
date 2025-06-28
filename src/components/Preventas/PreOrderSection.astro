@@ -1,0 +1,19 @@
+---
+// src/components/Preventas/PreOrderSection.astro
+import PreOrderItem from './PreOrderItem.astro'
+import { getUpcomingCollections } from '../../data/preorders'
+
+const { upcomingItems } = await getUpcomingCollections()
+---
+
+<section class="preorder-section" id="preorders">
+  <div class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold text-center mb-12">Colecciones en Preventa</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {upcomingItems.map(item => (
+        <PreOrderItem item={item} />
+      ))}
+    </div>
+  </div>
+</section>

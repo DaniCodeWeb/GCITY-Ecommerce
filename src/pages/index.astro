@@ -11,6 +11,9 @@ import NewsletterSection from "../components/NewsletterSection.astro"
 import PricingSection from "../components/PricingSection.astro"
 import QuoteSection from "../components/QuoteSection.astro"
 import TestimonialsSection from "../components/TestimonialsSection.astro"
+import ProductSearch from "../components/BusquedaProductos/ProductSearch.astro"
+import PreOrderSection from "../components/Preventas/PreOrderSection.astro"
+
 
 import caseStudies from "../data/case_studies.json"
 import clients from "../data/clients.json"
@@ -37,7 +40,7 @@ import testimonials from "../data/testimonials.json"
     title={ home.services_title }
   />
 
-  <ClientsSection
+  <ProductSearch 
     clients={ clients }
     title={ home.clients_title }
   />
