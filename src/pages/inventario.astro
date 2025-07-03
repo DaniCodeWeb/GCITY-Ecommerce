@@ -1,0 +1,299 @@
+---
+// src/pages/inventario.astro
+import InventarioUI from '../components/Inventario/InventarioUI.astro';
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Inventario - Benchmark</title>
+</head>
+<body class="bg-gray-100">
+  <!-- Contenedor de notificaciones -->
+  <div id="notificaciones" class="fixed top-4 right-4 z-50 space-y-2 max-w-md"></div>
+
+  <main class="container mx-auto px-4 py-8">
+    <InventarioUI />
+  </main>
+
+  <script>
+    import { InventarioManager } from '../lib/InventarioManager';
+    import { mostrarNotificacion } from '../lib/utils/notifications';
+    import type { EstructuraType } from '../types/inventario';
+
+    let inventarioManager: InventarioManager;
+
+    // Inicializar cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('🎉 DOM cargado, inicializando aplicación...');
+      inventarioManager = new InventarioManager();
+      registrarEventListeners();
+    });
+
+    function registrarEventListeners() {
+      // Añadir stock
+      const btnAddStock = document.getElementById('btn-add-stock');
+      if (btnAddStock) {
+        btnAddStock.addEventListener('click', async () => {
+          const producto_id = parseInt((document.getElementById('producto-id-add') as HTMLInputElement).value);
+          const cantidad = parseInt((document.getElementById('cantidad-add') as HTMLInputElement).value);
+          const estructura = (document.getElementById('estructura-add') as HTMLSelectElement).value as EstructuraType;
+
+          if (!producto_id || !cantidad || cantidad <= 0) {
+            mostrarNotificacion('Por favor, ingrese valores válidos', 'error');
+            return;
+          }
+
+          const resultado = await inventarioManager.añadirStock(producto_id, cantidad, estructura);
+          mostrarNotificacion(resultado.mensaje, resultado.success ? 'success' : 'error');
+          
+          if (resultado.success) {
+            agregarResultadoBenchmark(`Añadir Stock (${estructura.toUpperCase()})`, resultado.tiempo);
+            actualizarTablaInventario();
+            limpiarCampos(['producto-id-add', 'cantidad-add']);
+          }
+        });
+      }
+
+      // Quitar stock
+      const btnRemoveStock = document.getElementById('btn-remove-stock');
+      if (btnRemoveStock) {
+        btnRemoveStock.addEventListener('click', async () => {
+          const producto_id = parseInt((document.getElementById('producto-id-remove') as HTMLInputElement).value);
+          const cantidad = parseInt((document.getElementById('cantidad-remove') as HTMLInputElement).value);
+          const estructura = (document.getElementById('estructura-remove') as HTMLSelectElement).value as EstructuraType;
+
+          if (!producto_id || !cantidad || cantidad <= 0) {
+            mostrarNotificacion('Por favor, ingrese valores válidos', 'error');
+            return;
+          }
+
+          const resultado = await inventarioManager.quitarStock(producto_id, cantidad, estructura);
+          mostrarNotificacion(resultado.mensaje, resultado.success ? 'success' : 'error');
+          
+          if (resultado.success) {
+            agregarResultadoBenchmark(`Quitar Stock (${estructura.toUpperCase()})`, resultado.tiempo);
+            actualizarTablaInventario();
+          }
+          
+          limpiarCampos(['producto-id-remove', 'cantidad-remove']);
+        });
+      }
+
+      // Buscar inventario
+      const btnSearchInventory = document.getElementById('btn-search-inventory');
+      if (btnSearchInventory) {
+        btnSearchInventory.addEventListener('click', () => {
+          const producto_id = parseInt((document.getElementById('producto-id-search') as HTMLInputElement).value);
+          const estructura = (document.getElementById('estructura-search') as HTMLSelectElement).value as EstructuraType;
+
+          if (!producto_id) {
+            mostrarNotificacion('Por favor, ingrese un ID de producto válido', 'error');
+            return;
+          }
+
+          const resultado = inventarioManager.buscarInventario(producto_id, estructura);
+          mostrarNotificacion(resultado.mensaje, resultado.item ? 'success' : 'warning');
+          agregarResultadoBenchmark(`Buscar Producto (${estructura.toUpperCase()})`, resultado.tiempo);
+          
+          limpiarCampos(['producto-id-search']);
+        });
+      }
+
+      // Benchmark masivo
+      const btnMassiveBenchmark = document.getElementById('btn-massive-benchmark');
+      if (btnMassiveBenchmark) {
+        btnMassiveBenchmark.addEventListener('click', async () => {
+          const numOperaciones = parseInt((document.getElementById('num-operaciones') as HTMLInputElement).value) || 1000;
+          
+          mostrarNotificacion('Ejecutando benchmark masivo...', 'info');
+          btnMassiveBenchmark.textContent = 'Ejecutando...';
+          (btnMassiveBenchmark as HTMLButtonElement).disabled = true;
+
+          try {
+            const resultados = await inventarioManager.ejecutarBenchmarkMasivo(numOperaciones);
+            mostrarResultadosBenchmark(resultados, numOperaciones);
+            mostrarNotificacion('Benchmark completado', 'success');
+          } catch (error) {
+            mostrarNotificacion(`Error: ${error instanceof Error ? error.message : 'Error desconocido'}`, 'error');
+          } finally {
+            btnMassiveBenchmark.textContent = 'Ejecutar Benchmark';
+            (btnMassiveBenchmark as HTMLButtonElement).disabled = false;
+          }
+        });
+      }
+
+      // Limpiar resultados
+      const btnClearResults = document.getElementById('btn-clear-results');
+      if (btnClearResults) {
+        btnClearResults.addEventListener('click', () => {
+          const benchmarkResults = document.getElementById('benchmark-results');
+          if (benchmarkResults) {
+            benchmarkResults.innerHTML = '<p class="text-gray-600">Los resultados de rendimiento aparecerán aquí...</p>';
+          }
+          mostrarNotificacion('Resultados limpiados', 'info');
+        });
+      }
+
+      // Refrescar inventario
+      const btnRefreshInventory = document.getElementById('btn-refresh-inventory');
+      if (btnRefreshInventory) {
+        btnRefreshInventory.addEventListener('click', () => {
+          actualizarTablaInventario();
+        });
+      }
+    }
+
+    function limpiarCampos(ids: string[]) {
+      ids.forEach(id => {
+        const elemento = document.getElementById(id) as HTMLInputElement;
+        if (elemento) {
+          elemento.value = '';
+        }
+      });
+    }
+
+    function agregarResultadoBenchmark(operacion: string, tiempo: number) {
+      const benchmarkResults = document.getElementById('benchmark-results');
+      if (!benchmarkResults) return;
+
+      const resultado = document.createElement('div');
+      resultado.className = 'bg-gray-100 p-2 rounded text-sm';
+      resultado.innerHTML = `
+        <span class="font-medium">${operacion}:</span> 
+        ${tiempo.toFixed(4)}ms 
+        <span class="text-gray-500">(${new Date().toLocaleTimeString()})</span>
+      `;
+      
+      benchmarkResults.appendChild(resultado);
+    }
+
+    function actualizarTablaInventario() {
+      const tbody = document.getElementById('inventario-table');
+      if (!tbody) return;
+      
+      const inventario = inventarioManager.getInventario();
+      const productos = inventarioManager.getProductos();
+      
+      if (inventario.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No hay productos en el inventario</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = inventario.map(item => {
+        const producto = productos.find(p => p.id === item.producto_id);
+        const nombreProducto = producto ? producto.nombre : `Producto ${item.producto_id}`;
+        
+        return `
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3 text-sm">${item.producto_id}</td>
+            <td class="px-4 py-3 text-sm font-medium">${nombreProducto}</td>
+            <td class="px-4 py-3 text-sm">${item.cantidad}</td>
+            <td class="px-4 py-3 text-sm">${item.ubicacion}</td>
+            <td class="px-4 py-3 text-sm">${item.proveedor}</td>
+            <td class="px-4 py-3 text-sm">
+              <button onclick="editarItem(${item.producto_id})" 
+                      class="text-blue-600 hover:text-blue-800 mr-2">
+                Editar
+              </button>
+              <button onclick="eliminarItem(${item.producto_id})" 
+                      class="text-red-600 hover:text-red-800">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function mostrarResultadosBenchmark(resultados: any, numOperaciones: number) {
+      const contenedor = document.getElementById('benchmark-results');
+      if (!contenedor) return;
+      
+      // Título del benchmark
+      const titulo = document.createElement('div');
+      titulo.className = 'bg-blue-100 p-4 rounded-lg mb-4';
+      titulo.innerHTML = `
+        <h3 class="text-lg font-semibold text-blue-800">
+          Benchmark Masivo - ${numOperaciones} operaciones
+        </h3>
+        <p class="text-sm text-blue-600">Tiempo en milisegundos (ms)</p>
+      `;
+      contenedor.appendChild(titulo);
+      
+      // Crear tabla de resultados
+      const tabla = document.createElement('div');
+      tabla.className = 'overflow-x-auto mb-4';
+      
+      let tablaHTML = `
+        <table class="min-w-full bg-black border border-gray-300">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 border text-left">Estructura</th>
+              <th class="px-4 py-2 border text-left">Agregar (ms)</th>
+              <th class="px-4 py-2 border text-left">Buscar (ms)</th>
+              <th class="px-4 py-2 border text-left">Quitar (ms)</th>
+              <th class="px-4 py-2 border text-left">Total (ms)</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      const estructuras = ['array', 'hashmap', 'bst', 'linkedlist'];
+      const nombres = {
+        array: 'Array',
+        hashmap: 'HashMap',
+        bst: 'BST',
+        linkedlist: 'LinkedList'
+      };
+      
+      estructuras.forEach(estructura => {
+        const tiempos = resultados[estructura];
+        const total = tiempos.agregar + tiempos.buscar + tiempos.quitar;
+        
+        tablaHTML += `
+          <tr>
+            <td class="px-4 py-2 border font-medium">${nombres[estructura as keyof typeof nombres]}</td>
+            <td class="px-4 py-2 border">${tiempos.agregar.toFixed(2)}</td>
+            <td class="px-4 py-2 border">${tiempos.buscar.toFixed(2)}</td>
+            <td class="px-4 py-2 border">${tiempos.quitar.toFixed(2)}</td>
+            <td class="px-4 py-2 border font-semibold">${total.toFixed(2)}</td>
+          </tr>
+        `;
+      });
+      
+      tablaHTML += `
+          </tbody>
+        </table>
+      `;
+      
+      tabla.innerHTML = tablaHTML;
+      contenedor.appendChild(tabla);
+    }
+
+    // Funciones globales para los botones de la tabla
+    (window as any).editarItem = function(producto_id: number) {
+      const nuevaCantidad = prompt(`Ingrese la nueva cantidad para el producto ${producto_id}:`);
+      if (nuevaCantidad !== null && !isNaN(Number(nuevaCantidad)) && Number(nuevaCantidad) >= 0) {
+        const success = inventarioManager.editarItem(producto_id, parseInt(nuevaCantidad));
+        if (success) {
+          mostrarNotificacion('Producto actualizado correctamente', 'success');
+          actualizarTablaInventario();
+        }
+      }
+    };
+
+    (window as any).eliminarItem = function(producto_id: number) {
+      if (confirm(`¿Está seguro de que desea eliminar el producto ${producto_id}?`)) {
+        const success = inventarioManager.eliminarItem(producto_id);
+        if (success) {
+          mostrarNotificacion('Producto eliminado correctamente', 'success');
+          actualizarTablaInventario();
+        }
+      }
+    };
+  </script>
+</body>
+</html>

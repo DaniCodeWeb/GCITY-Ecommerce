@@ -1,0 +1,173 @@
+---
+// src/components/InventarioUI.astro
+---
+
+<div class="bg-black rounded-lg shadow-lg p-6">
+  <h1 class="text-3xl font-bold text-black mb-8">Gestión de Inventario</h1>
+  
+  <!-- Sección de Benchmark -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+    <!-- Añadir Stock -->
+    <div class="bg-gray-400 p-6 rounded-lg">
+      <h2 class="text-xl font-semibold mb-4 text-green-600">Añadir Stock</h2>
+      <div class="space-y-4">
+        <input 
+          type="number" 
+          id="producto-id-add" 
+          placeholder="ID del Producto"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-black"
+        />
+        <input 
+          type="number" 
+          id="cantidad-add" 
+          placeholder="Cantidad"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-black"
+        />
+        <select 
+          id="estructura-add"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-black"
+        >
+          <option value="array">Array</option>
+          <option value="hashmap">HashMap</option>
+          <option value="bst">BST</option>
+          <option value="linkedlist">LinkedList</option>
+        </select>
+        <button 
+          id="btn-add-stock"
+          class="w-full bg-green-600 text-black px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
+        >
+          Añadir Stock
+        </button>
+      </div>
+    </div>
+
+    <!-- Quitar Stock -->
+    <div class="bg-gray-400 p-6 rounded-lg">
+      <h2 class="text-xl font-semibold mb-4 text-red-600">Quitar Stock</h2>
+      <div class="space-y-4">
+        <input 
+          type="number" 
+          id="producto-id-remove" 
+          placeholder="ID del Producto"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 text-black"
+        />
+        <input 
+          type="number" 
+          id="cantidad-remove" 
+          placeholder="Cantidad"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 text-black"
+        />
+        <select 
+          id="estructura-remove"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 text-black"
+        >
+          <option value="array">Array</option>
+          <option value="hashmap">HashMap</option>
+          <option value="bst">BST</option>
+          <option value="linkedlist">LinkedList</option>
+        </select>
+        <button 
+          id="btn-remove-stock"
+          class="w-full bg-red-600 text-black px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
+        >
+          Quitar Stock
+        </button>
+      </div>
+    </div>
+
+    <!-- Buscar Inventario -->
+    <div class="bg-gray-400 p-6 rounded-lg">
+      <h2 class="text-xl font-semibold mb-4 text-blue-600">Buscar Inventario</h2>
+      <div class="space-y-4">
+        <input 
+          type="number" 
+          id="producto-id-search" 
+          placeholder="ID del Producto"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+        />
+        <select 
+          id="estructura-search"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+        >
+          <option value="array">Array</option>
+          <option value="hashmap">HashMap</option>
+          <option value="bst">BST</option>
+          <option value="linkedlist">LinkedList</option>
+        </select>
+        <button 
+          id="btn-search-inventory"
+          class="w-full bg-blue-600 text-black px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+        >
+          Buscar
+        </button>
+      </div>
+    </div>
+
+    <!-- Benchmark Masivo -->
+    <div class="bg-gray-400 p-6 rounded-lg">
+      <h2 class="text-xl font-semibold mb-4 text-purple-600">Benchmark Masivo</h2>
+      <div class="space-y-4">
+        <input 
+          type="number" 
+          id="num-operaciones" 
+          placeholder="Número de operaciones"
+          value="1000"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
+        />
+        <button 
+          id="btn-massive-benchmark"
+          class="w-full bg-purple-600 text-black px-4 py-2 rounded-md hover:bg-purple-700 transition-colors"
+        >
+          Ejecutar Benchmark
+        </button>
+        <button 
+          id="btn-clear-results"
+          class="w-full bg-gray-600 text-black px-4 py-2 rounded-md hover:bg-gray-700 transition-colors"
+        >
+          Limpiar Resultados
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resultados del Benchmark -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4 text-black">Resultados de Rendimiento</h2>
+    <div id="benchmark-results" class="space-y-2 max-h-96 overflow-y-auto">
+      <p class="text-black">Los resultados de rendimiento aparecerán aquí...</p>
+    </div>
+  </div>
+
+  <!-- Tabla de Inventario Actual -->
+  <div>
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-semibold text-black">Inventario Actual</h2>
+      <button 
+        id="btn-refresh-inventory"
+        class="bg-indigo-600 text-black px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors"
+      >
+        Actualizar
+      </button>
+    </div>
+    
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-4 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">ID</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">Producto</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">Cantidad</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">Ubicación</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">Proveedor</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="inventario-table">
+          <tr>
+            <td colspan="6" class="px-4 py-8 text-center text-black">Cargando inventario...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

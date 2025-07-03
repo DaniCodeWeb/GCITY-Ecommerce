@@ -1,0 +1,229 @@
+---
+// src/pages/productos.astro
+export const prerender = false;
+---
+
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestor de Productos - Benchmark de Estructuras</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div id="app" class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-black">Gestor de Productos</h1>
+                        <p class="text-sm text-black">Comparación de estructuras de datos</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Controles de búsqueda y filtros -->
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-black mb-2">Buscar por nombre</label>
+                        <input
+                            type="text"
+                            id="buscarNombre"
+                            placeholder="Nombre del producto..."
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-black mb-2">Categoría</label>
+                        <select id="filtroCategoria" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black">
+                            <option value="">Todas las categorías</option>
+                            <option value="Camisetas">Camisetas</option>
+                            <option value="Pantalones">Pantalones</option>
+                            <option value="Chaquetas">Chaquetas</option>
+                            <option value="Zapatos">Zapatos</option>
+                            <option value="Accesorios">Accesorios</option>
+                            <option value="Vestidos">Vestidos</option>
+                            <option value="Faldas">Faldas</option>
+                            <option value="Shorts">Shorts</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-black mb-2">Marca</label>
+                        <select id="filtroMarca" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black">
+                            <option value="">Todas las marcas</option>
+                            <option value="Nike">Nike</option>
+                            <option value="Adidas">Adidas</option>
+                            <option value="Zara">Zara</option>
+                            <option value="H&M">H&M</option>
+                            <option value="Uniqlo">Uniqlo</option>
+                            <option value="Forever21">Forever21</option>
+                            <option value="Pull&Bear">Pull&Bear</option>
+                            <option value="Bershka">Bershka</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-black mb-2">Rango de precio</label>
+                        <div class="flex space-x-2">
+                            <input
+                                type="number"
+                                id="precioMin"
+                                placeholder="Min"
+                                step="0.01"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                            />
+                            <input
+                                type="number"
+                                id="precioMax"
+                                placeholder="Max"
+                                step="0.01"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de búsqueda con diferentes estructuras -->
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <button id="buscarLista" class="px-4 py-2 bg-green-600 text-black rounded-md hover:bg-green-700 transition-colors">
+                        🔍 Lista Simple
+                    </button>
+                    <button id="buscarHash" class="px-4 py-2 bg-blue-600 text-black rounded-md hover:bg-blue-700 transition-colors">
+                        🔍 Tabla Hash
+                    </button>
+                    <button id="buscarArbol" class="px-4 py-2 bg-purple-600 text-black rounded-md hover:bg-purple-700 transition-colors">
+                        🔍 Árbol Binario
+                    </button>
+                    <button id="buscarGrafo" class="px-4 py-2 bg-red-600 text-black rounded-md hover:bg-red-700 transition-colors">
+                        🔍 Grafo
+                    </button>
+                    <button id="limpiarFiltros" class="px-4 py-2 bg-gray-600 text-black rounded-md hover:bg-gray-700 transition-colors">
+                        Limpiar
+                    </button>
+                </div>
+
+                <!-- Resultados de benchmark -->
+                <div id="benchmarkResultados" class="hidden bg-gray-50 p-4 rounded-lg border">
+                    <h3 class="font-semibold mb-2 text-black">Resultados de Benchmark:</h3>
+                    <div id="tiemposEjecucion" class="text-sm space-y-1 text-black"></div>
+                </div>
+            </div>
+
+            <!-- Botón para generar datos de prueba -->
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-medium text-black">Datos de Prueba</h3>
+                        <p class="text-sm text-black">Genera productos de prueba para el benchmark</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="generarDatos" class="px-4 py-2 bg-yellow-600 text-black rounded-md hover:bg-yellow-700 transition-colors">
+                            Generar 500 Productos
+                        </button>
+                        <button id="limpiarDatos" class="px-4 py-2 bg-red-600 text-black rounded-md hover:bg-red-700 transition-colors">
+                            Limpiar Datos
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para agregar/editar producto -->
+            <div id="modalProducto" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+                    <h3 id="modalTitulo" class="text-lg font-semibold mb-4 text-black">Agregar Producto</h3>
+                    <form id="formProducto" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-black mb-1">Nombre *</label>
+                            <input type="text" id="productoNombre" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-black mb-1">Descripción</label>
+                            <textarea id="productoDescripcion" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"></textarea>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-black mb-1">Precio *</label>
+                                <input type="number" id="productoPrecio" step="0.01" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-black mb-1">Categoría *</label>
+                                <select id="productoCategoria" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black">
+                                    <option value="">Seleccionar</option>
+                                    <option value="Camisetas">Camisetas</option>
+                                    <option value="Pantalones">Pantalones</option>
+                                    <option value="Chaquetas">Chaquetas</option>
+                                    <option value="Zapatos">Zapatos</option>
+                                    <option value="Accesorios">Accesorios</option>
+                                    <option value="Vestidos">Vestidos</option>
+                                    <option value="Faldas">Faldas</option>
+                                    <option value="Shorts">Shorts</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-black mb-1">Stock Mínimo</label>
+                                <input type="number" id="productoStockMinimo" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-black mb-1">Imagen URL</label>
+                                <input type="url" id="productoImagenUrl" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="productoActivo" checked class="mr-2" />
+                                <span class="text-sm font-medium text-black">Producto activo</span>
+                            </label>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-4">
+                            <button type="button" id="cancelarModal" class="px-4 py-2 text-black border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-black rounded-md hover:bg-blue-700 transition-colors">
+                                Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Botón agregar producto -->
+            <div class="mb-6">
+                <button id="agregarProducto" class="px-4 py-2 bg-blue-600 text-black rounded-md hover:bg-blue-700 transition-colors">
+                    + Agregar Producto
+                </button>
+            </div>
+
+            <!-- Lista de productos -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-black">Productos</h2>
+                    <p id="contadorProductos" class="text-sm text-black">Cargando...</p>
+                </div>
+                <div id="loading" class="p-8 text-center">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                    <p class="mt-2 text-black">Cargando productos...</p>
+                </div>
+                <div id="listaProductos" class="hidden"></div>
+                <div id="noResultados" class="hidden p-8 text-center text-black">
+                    <p>No se encontraron productos</p>
+                    <button id="cargarProductosBtn" class="mt-2 px-4 py-2 bg-blue-600 text-black rounded-md hover:bg-blue-700 transition-colors">
+                        Cargar productos
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notificaciones -->
+    <div id="notificaciones" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <script type="module" src="/src/scripts/productos-manager.js"></script>
+</body>
+</html>

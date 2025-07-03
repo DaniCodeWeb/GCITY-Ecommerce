@@ -1,8 +1,17 @@
 import { defineConfig } from 'astro/config'
 import tailwindcss from '@tailwindcss/vite'
+import node from '@astrojs/node';
 
 export default defineConfig({
+      output: 'server',
+      adapter: node({
+      mode: 'standalone'
+  }),
   vite: {
+        define: {
+      'process.env.PUBLIC_SUPABASE_URL': JSON.stringify(process.env.PUBLIC_SUPABASE_URL),
+      'process.env.PUBLIC_SUPABASE_ANON_KEY': JSON.stringify(process.env.PUBLIC_SUPABASE_ANON_KEY),
+    },
     plugins: [tailwindcss()]
   },
   experimental: {

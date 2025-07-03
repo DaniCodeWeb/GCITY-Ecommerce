@@ -3,7 +3,6 @@
 import Layout from "../layouts/Layout.astro"
 
 import CaseStudiesSection from "../components/CaseStudiesSection.astro"
-import ClientsSection from "../components/ClientsSection.astro"
 import FaqSection from "../components/FaqSection.astro"
 import ServicesCarousel from "../components/ServicesCarousel.astro"
 import HeroSection from "../components/HeroSection.astro"
@@ -12,7 +11,8 @@ import PricingSection from "../components/PricingSection.astro"
 import QuoteSection from "../components/QuoteSection.astro"
 import TestimonialsSection from "../components/TestimonialsSection.astro"
 import ProductSearch from "../components/BusquedaProductos/ProductSearch.astro"
-import PreOrderSection from "../components/Preventas/PreOrderSection.astro"
+import Inventario from "./inventario.astro"
+import Productos from "../components/ProductosBenchmark/productos.astro"
 
 
 import caseStudies from "../data/case_studies.json"
@@ -25,6 +25,7 @@ import global_settings from "../data/global_settings.json"
 import newsletter from "../data/newsletter.json"
 import testimonials from "../data/testimonials.json"
 
+
 ---
 
 <Layout title={ global_settings.title }>
@@ -34,7 +35,8 @@ import testimonials from "../data/testimonials.json"
     settings={ global_settings }
     title={ home.hero_title }
   />
-
+    <Inventario />
+    <Productos />
   <ServicesCarousel
     services={ services }
     title={ home.services_title }
